@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{js/jquery.min.js}"/>
+    <title>Title</title>
+</head>
+<body>
+<script type="text/javascript">
+    function checkUsername(strength) {
+//发送ajax请求 验证该用户名是否可用
+//1.创建AJAX核心对象XMLHttpRequest(浏览器内置) var xhr=new XMLHttpRequest();
+        var xhr;
+        if (window.XMLHttpRequest) {
+            xhr =new XMLHttpRequest();
+        }else {
+            xhr=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        //2.注册回调函数
+        //程序执行到这里的时候，后面的回调函数并不会执行，只是将回调函数注册给xhr对象
+        //等xhr对象的readyState发生改变的时候,后面的回调函数会执行
+        /*
+           XMLHttpRequest对象在请求和响应的过程当中，该对象的readyState的状态从0-4
+           0.请求未初始化
+           1.服务器连接已建立
+           2.请求已接收
+           3.请求处理中
+           4.请求已完成，且响应已就绪
+         */
+        xhr.onreadystatechange=function () {//xhr对象的readyState发生改变时回调一次
+            if ( xhr.readyState==4){
+                if (xhr.status==200){   //服务器正常响应结束
+                    //var s=xhr.responseText;
+                    // alert(s)
+                    var nameTipMsg=document.getElementById("nameTipMsg");
+                    nameTipMsg.innerHTML=xhr.responseText;
+                }else{
+                    alert(xhr.status)
+                }
+            }
+        }
+//3.开启浏览器和服务器之间的通道
+        /*
+        xhr.open(method,url,asyn)
+        method:指定请求方式为post还是get
+        url：请求路径
+        asyn：true/false 表示支持异步还是不支持 目前我们统一写成true
+         */
+        xhr.open("Get","strengthTest?strength="+strength,true);
+//4.发送AJAX请求
+        xhr.send();
+
+    }
+    </script>
+<div class="container">
+    <span id="nameTipMsg"  style="font-size: 12px">
+            </span>
+    <form role="form" th:action="@{/test}" method="get">
+        <div class="form-group col-md-6">
+            <label for="strength">*力量</label>
+            <input type="text" class="form-control" id="strength" onblur="checkUsername(this.value);" placeholder="请输入力量测试信息" name="strength">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="name">*代号</label>
+            <input type="text" class="form-control" id="name" placeholder="请输入代号" name="name">
+        </div><div class="form-group col-md-4">
+        <label for="level">Level</label>
+        <input type="text" class="form-control" id="level" placeholder="请输入level" name="level">
+    </div>
+        <button type="submit" class="btn btn-primary">提交数据</button>
+    </form>
+</div>
+<table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+    <tr>
+        <th>力量</th>
+        <th>代号</th>
+        <th>级别</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <div th:each="item, itemStat: ${hero}">
+        <tr>
+            <td th:text="${item.strength}"></td>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.level}"></td>
+
+        </tr>
+    </div>
+    </tbody>
+</table>
+
+</body>
+</html>

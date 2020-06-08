@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/websocket.js}"></script>
+    <title>My WebSocket</title>
+</head>
+<body>
+        测试webSocket站点.
+<br/>
+<input type="text" id="message">
+<button onclick="sendMessage()" >发送消息</button>
+<button onclick="closeWebSocket()">关闭websocket连接</button>
+<div id="context"></div>
+</body>
+</html>
