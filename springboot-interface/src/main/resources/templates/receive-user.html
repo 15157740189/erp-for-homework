@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/sockjs.js}"></script>
+    <script type="text/javascript" th:src="@{/js/stomp.js}"></script>
+    <title>websocket</title>
+</head>
+<script type="text/javascript">
+        var noticeSocket = function () {
+        var s=new SockJS('/springboot-interface/wsuser');
+        stompClient=Stomp.over(s);
+        stompClient.connect({},function (frame) {
+            console.log("notice socket connection!")
+            stompClient.subscribe('/user/queue/customer',function(data) {
+                $("#receive").html(data.body);
+            });
+        });
+        };
+        noticeSocket();
+        </script>
+<body>
+<h1><span id="receive"> 接收消息 </span> </h1>
+</body>
+</html>

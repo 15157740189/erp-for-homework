@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <title>Title</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.js"></script>
+    <script type="text/javascript" >
+        $(document).ready(function () {
+            //模拟30000个请求来实现并发
+            var max=30000;
+            for (var i = 0; i < max; i++) {
+              //jquery的post请求(异步)
+                $.post({
+                    //请求抢id为1的红包
+                    url:"/rapRedPacket?redPacketId=1&userId=" + 1 ,
+                    success:function (result) {
+                    }
+                })
+            }
+        })
+    </script>
+</head>
+<body>
+</body>
+</html>
